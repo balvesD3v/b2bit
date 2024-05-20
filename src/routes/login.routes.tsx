@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../components/Login.tsx";
+import Login from "../components/Login/index.tsx";
 
 export function LoginRoutes() {
   return (

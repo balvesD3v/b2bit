@@ -1,14 +1,20 @@
 import { useState } from "react";
 import axios from "../../../axios-config";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-function Login() {
+function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
+      if (!email || !password) {
+        toast.error("Por favor, preencha todos os campos.");
+        return;
+      }
+
       const response = await axios.post(
         "/auth/login/",
         { email, password },
@@ -25,18 +31,20 @@ function Login() {
       if (!token) {
         console.error("Token not found in response:", response.data);
       } else {
-        // Salvando o token no armazenamento local
         localStorage.setItem("token", token);
         navigate("/profile");
+        toast.success("Login bem sucedido!");
       }
 
       console.log("Login successful:", response.data);
       navigate("/profile");
     } catch (error) {
       console.error("Error:", error);
+      if (error.response && error.response.status === 401) {
+        toast.error("E-mail ou senha incorretos. Por favor, tente novamente.");
+      }
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white drop-shadow-2xl rounded-3xl w-[438px] h-auto mx-auto p-8">
@@ -121,4 +129,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginForm;

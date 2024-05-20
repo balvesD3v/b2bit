@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../axios-config";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -42,8 +43,8 @@ export default function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-
     navigate("/");
+    toast.success("Logout bem sucedido!");
   };
 
   return (

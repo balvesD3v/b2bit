@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import Login from "../components/Login.tsx";
+import Login from "../components/Login/index.tsx";
 import Profile from "../components/Profile/index.tsx";
 
 export function RoutesIndex() {
