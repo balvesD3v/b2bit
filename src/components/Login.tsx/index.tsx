@@ -1,4 +1,42 @@
+import { useState } from "react";
+import axios from "../../../axios-config";
+import { useNavigate } from "react-router-dom";
+
 function Login() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        "/auth/login/",
+        { email, password },
+        {
+          headers: {
+            Accept: "application/json;version=v1_web",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const token = response.data.tokens.access;
+
+      if (!token) {
+        console.error("Token not found in response:", response.data);
+      } else {
+        // Salvando o token no armazenamento local
+        localStorage.setItem("token", token);
+        navigate("/profile");
+      }
+
+      console.log("Login successful:", response.data);
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white drop-shadow-2xl rounded-3xl w-[438px] h-auto mx-auto p-8">
@@ -48,6 +86,8 @@ function Login() {
               id="email"
               type="email"
               placeholder="@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
@@ -62,12 +102,15 @@ function Login() {
               id="password"
               type="password"
               placeholder="****************"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-center">
             <button
               className="hover:bg-blue-700 bg-[#02274F] text-white font-bold py-2 px-4 rounded-lg w-[385.88px] h-[54px] focus:outline-none focus:shadow-outline"
               type="button"
+              onClick={handleLogin}
             >
               Sign In
             </button>
