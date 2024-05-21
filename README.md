@@ -21,7 +21,7 @@
 1. **Clone o repositório**
    ```sh
    git clone https://github.com/balvesD3v/b2bit
-   cd minha-aplicacao
+   cd b2bit
 
 2. **Instale as dependências**
      npm install
