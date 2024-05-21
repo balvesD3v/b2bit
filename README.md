@@ -27,7 +27,7 @@
      npm install
 
 3. Inicie o servidor de desenvolvimento
-   npm start
+   npm run dev
    Isso abrirá a aplicação em http://localhost:5173.
    
 
