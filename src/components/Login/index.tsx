@@ -3,6 +3,12 @@ import axios from "../../../axios-config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+interface ErrorWithResponse extends Error {
+  response?: {
+    status: number;
+  };
+}
+
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -40,8 +46,13 @@ function LoginForm() {
       navigate("/profile");
     } catch (error) {
       console.error("Error:", error);
-      if (error.response && error.response.status === 401) {
+
+      const typedError = error as ErrorWithResponse;
+
+      if (typedError.response && typedError.response.status === 401) {
         toast.error("E-mail ou senha incorretos. Por favor, tente novamente.");
+      } else {
+        console.error("An unknown error occurred");
       }
     }
   };
